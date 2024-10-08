@@ -1,5 +1,6 @@
 "use client"
 
+import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -20,6 +21,7 @@ import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
 function TodoPage() {
+    const router = useRouter();
     const [todos, setTodos] = useState<TodoType[]>([])
     const [newTodo, setNewTodo] = useState("")
     const [editingTodo, setEditingTodo] = useState<TodoType | null>(null)
@@ -73,10 +75,18 @@ function TodoPage() {
         }
     }
 
+    const handleLogout = () => {
+        router.push("/sign-in");
+        router.refresh();
+    }
+
     return (
         <Card className="p-2 max-w-md m-auto">
             <CardHeader>
-                <CardTitle>TodoList</CardTitle>
+                <CardTitle className="flex justify-between">
+                    <span>TodoList</span>
+                    <Button size={"sm"} onClick={handleLogout}>Logout</Button>
+                </CardTitle>
                 <CardDescription>
                     Your&apos;e the owner of your data!! :)
                     <br />
