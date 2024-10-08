@@ -13,7 +13,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { validateEmail, validatePassword } from "@/validation/auth-validations";
-import { SignInService } from "@/service/api-call-service";
+import { SignUpService } from "@/service/api-call-service";
 import { SetLocalStorageService } from "@/service/local-storage-service";
 
 function SignIn() {
@@ -53,7 +53,7 @@ function SignIn() {
 
     if ((emailPass === true) && (passwordPass === true)) {
       const timeLine = new Date();
-      const response = await SignInService({ email, password, timeline: timeLine.toISOString() });
+      const response = await SignUpService({ email, password, timeline: timeLine.toISOString() });
       if (response && response.status === "success") {
         SetLocalStorageService("auth", response.data, true);
         console.log("Form submitted successfully");
