@@ -9,13 +9,13 @@ const SetLocalStorageService = (key: string, value: string | object, serialized:
 };
 
 
-const GetLocalStorageService = <T>(key: string): T | null => {
+const GetLocalStorageService = (key: string): string | null => {
     try {
         const serializedValue = localStorage.getItem(key);
         if (serializedValue === null) {
             return null;
         }
-        return JSON.parse(serializedValue) as T;
+        return serializedValue;
     } catch (error) {
         console.error("Error reading data from localStorage:", error);
         return null;

@@ -1,21 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
-import { validateEmail, validatePassword } from "@/validation/auth-validations";
+import { Get_Auth_Secret } from "@/handler/env-handler";
+import { CreateToken, VerifyToken } from "@/service/token-service";
 
 export async function POST(req: NextRequest) {
-    const SYSTEM_AUTH_SECRET = process.env.SYSTEM_AUTH_SECRET;
-    if (!SYSTEM_AUTH_SECRET) throw new Error("SYSTEM_AUTH_SECRET not found in environment");
-
+    const SYSTEM_AUTH_SECRET = Get_Auth_Secret();
     const body = await req.json();
-    console.log(body);
-    const { email, password, timeline } = body;
-    const passEmail = validateEmail(email);
-    const passPassword = validatePassword(password);
-    if (passEmail !== true || passPassword !== true) {
-        return NextResponse.json({ status: "failed", error: `Validation Failed: \nEmail: ${passEmail} \nPassword: ${passPassword}` });
+    const { token, timeline } = body;
+    const valid = VerifyToken(token, SYSTEM_AUTH_SECRET);
+    if (valid) {
+        const { email, password } = valid;
+        const newToken = CreateToken({ email, password, timeline }, SYSTEM_AUTH_SECRET)
+        return NextResponse.json({ status: "success", data: { token: newToken } });
     }
-    const jwtToken = jwt.sign({ email, password, timeline }, SYSTEM_AUTH_SECRET);
-    return NextResponse.json({ status: "success", data: { jwt: jwtToken } });
+    else {
+        return NextResponse.error();
+    }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -12,7 +12,7 @@ import Link from "next/link";
 
 function Landing() {
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full max-w-sm m-auto">
       <CardHeader>
         <CardTitle>Todo App</CardTitle>
         <CardDescription>Built using <b>NextJS</b> with Auth based on <b>JWT</b></CardDescription>
