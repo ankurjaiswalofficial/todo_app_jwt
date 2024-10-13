@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Analytics from "@/components/analytics";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +20,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} dark bg-green-900 h-screen w-full flex`}
       >
+        <Analytics measurementId={process.env.GOOGLE_MEASUREMENT_ID!} />
         {children}
       </body>
     </html>
